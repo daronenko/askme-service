@@ -1,17 +1,31 @@
+body {
+    font-family: Nunito, sans-serif;
+    color: #222222;
+}
+
 .tag {
     display: inline-block;
     background-color: #ddf4ff;
     color: #0a69da;
     border: none;
-    border-radius: 13px;
+    border-radius: 15px;
     font-size: 12px;
     font-weight: 500;
     text-decoration: none;
-    padding: 2px 10px;
+    padding: 1px 8px;
     margin-top: 5px;
 }
 
 .tag:hover {
     background-color: #0a69da;
     color: #ffffff;
+}
+
+.link {
+    color: #0060a0;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #0085de;
 }
