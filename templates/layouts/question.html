@@ -1,0 +1,35 @@
+{% load static %}
+<div class="card mt-3 mb-3">
+    <div class="row g-0">
+        <div class="col-auto p-4">
+            <div class="mb-3" style="width: 64px; height: 64px; margin: auto;">
+                <img src="https://github.com/daronenko.png" class="img-fluid rounded-circle" alt="daronenko" />
+            </div>
+            <div class="d-flex">
+                <button type="button" class="bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0">
+                    <img src="{% static "icons/arrow-up-short.svg" %}" width="25" height="25" alt="arrow up" />
+                </button>
+                <div class="ms-2 me-2">
+                    <span class="fs-5">5</span>
+                </div>
+                <button type="button" class="bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0">
+                    <img src="{% static "icons/arrow-down-short.svg" %}" width="25" height="25" alt="arrow down" />
+                </button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body ps-0">
+                <h5 class="card-title"><a href="question.html" class="link">{{ question.title }}</a></h5>
+                <p class="card-text">{{ question.text }}</p>
+                <div class="row justify-content-center">
+                    <a class="col-2 link" href="question.html">2 answer(s)</a>
+                    <div class="col-10">
+                        {% for tag in question.tags %}
+                            <a href="#" class="tag">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

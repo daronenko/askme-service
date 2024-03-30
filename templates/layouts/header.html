@@ -1,0 +1,40 @@
+<header class="py-3 mb-3 border-bottom">
+    <div class="container-fluid container-lg d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr">
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="fs-4 fw-bold">Ask Service</span>
+            </a>
+            <ul class="dropdown-menu text-small shadow mt-2" style="">
+                <li><a class="dropdown-item" href="./index.html" aria-current="page">Feed</a></li>
+                <li><a class="dropdown-item" href="ask.html">Ask</a></li>
+            </ul>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <form class="w-100 me-3" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+
+
+            {% if authorized %}
+                <div class="flex-shrink-0 dropdown">
+                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/daronenko.png" alt="daronenko" width="32" height="32" class="rounded-circle">
+                        <span class="ms-2">daronenko</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow mt-2">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="flex-shrink-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm me-2">Log In</button>
+                    <button type="button" class="btn btn-primary btn-sm">Sign Up</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</header>

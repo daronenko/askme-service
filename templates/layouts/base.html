@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ask Service</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+</head>
+<body>
+    {% include "layouts/header.html" %}
+
+    <main class="container-fluid container-lg pt-5 pb-5">
+        <div class="d-grid gap-5" style="grid-template-columns: 3fr 1fr">
+            <div>
+                {% block content%}{% endblock %}
+            </div>
+            <div>
+                {% include "layouts/popular_tags.html" %}
+                {% include "layouts/best_members.html" %}
+            </div>
+        </div>
+    </main>
+
+    {% include "layouts/footer.html" %}
+
+    <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+</body>
+</html>
