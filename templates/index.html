@@ -2,8 +2,8 @@
 
 {% block content %}
     <div class="d-flex gap-4 mb-0">
-        <h1>Questions</h1>
-        <a class="link" href="hot-questions.html" style="margin-top: auto; margin-bottom: 10px">Hot Questions</a>
+        <h1>All Questions</h1>
+        <a class="link" href="{% url "hot_questions" %}" style="margin-top: auto; margin-bottom: 10px">Hot Questions</a>
     </div>
     <div>
         {% for question in questions %}
