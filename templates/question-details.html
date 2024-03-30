@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <h1>Question</h1>
+
+    {% include "layouts/question.html" with item=question %}
+
+    <div class="mt-5" style="width: 90%">
+        <h5>{{ question.answers|length }} answer(s)</h5>
+
+        <div>
+            {% for answer in question.answers %}
+                {% include "layouts/answer.html" with text=answer %}
+            {% endfor %}
+        </div>
+
+        {% include "layouts/pagination.html" %}
+
+        <form class="mt-5">
+            <textarea class="form-control" id="answer" rows="5" placeholder="Your answer..."></textarea>
+            <button class="btn btn-primary mt-3">Answer</button>
+        </form>
+    </div>
+{% endblock %}

@@ -7,7 +7,7 @@
     </div>
     <div>
         {% for question in questions %}
-            {% include "layouts/question.html" %}
+            {% include "layouts/question.html" with item=question %}
         {% endfor %}
     </div>
     {% include "layouts/pagination.html" %}
