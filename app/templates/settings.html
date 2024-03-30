@@ -20,8 +20,8 @@
                     <span class="fs-4 fw-bold">Ask Service</span>
                 </a>
                 <ul class="dropdown-menu text-small shadow mt-2" style="">
-                    <li><a class="dropdown-item" href="./index.html" aria-current="page">Feed</a></li>
-                    <li><a class="dropdown-item" href="./ask.html">Ask</a></li>
+                    <li><a class="dropdown-item" href="index.html" aria-current="page">Feed</a></li>
+                    <li><a class="dropdown-item" href="ask.html">Ask</a></li>
                 </ul>
             </div>
 
@@ -53,38 +53,48 @@
 
     <main class="container-fluid container-lg pt-5 pb-5">
         <div class="d-grid gap-5" style="grid-template-columns: 3fr 1fr">
-            <div class="d-flex justify-content-center">
+            <div>
                 <div>
-                    <h1 class="text-center">Sign Up</h1>
+                    <h1>Settings</h1>
                     <div class="alert alert-danger mt-3" role="alert">
                         Danger alert!
                     </div>
                     <form class="mt-3" enctype="multipart/form-data">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="username" name="user[username]" autofocus=true autocomplete="username" maxlength="32" required>
-                            <label for="username">Username</label>
+                        <div class="mt-4 mb-3 row">
+                            <label for="username" class="col-sm-2 col-form-label">Username</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control text-body-secondary" id="username" value="daronenko" readonly>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email" name="user[email]" autocomplete="email" maxlength="64" required>
-                            <label for="email">Email</label>
+                        <div class="mb-3 row">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="email" value="example@mail.ru">
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="password" name="user[password]" autocomplete="new-password" minlength="8" required>
-                            <label for="password">Password</label>
+                        <div class="mb-3 row">
+                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password">
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="password_confirmation" name="user[password_confirmation]" autocomplete="new-password" minlength="8" required>
-                            <label for="password_confirmation">Confirm Password</label>
+                        <div class="mb-3 row">
+                            <label for="password-confirmation" class="col-sm-2 col-form-label">Confirm Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password-confirmation">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="avatar" class="form-label">Avatar</label>
-                            <input class="form-control" type="file" id="avatar">
+                        <div class="mb-3 row">
+                            <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
+                            <div class="col-sm-1" style="width: 64px; height: 64px; margin: auto;">
+                                <img src="https://github.com/daronenko.png" class="img-fluid rounded-circle" alt="daronenko" />
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" id="avatar">
+                            </div>
                         </div>
-                        <button class="btn btn-primary mt-1 w-100">Sign Up</button>
+                        <button class="btn btn-primary">Save</button>
                     </form>
-                    <div class="mt-4">
-                        <span>Already have an account? <a href="./login.html" class="link">Log In</a></span>
-                    </div>
                 </div>
             </div>
             <div>
@@ -92,7 +102,7 @@
                     <h5>Popular Tags</h5>
                     <div>
                         <a href="#" class="tag">python</a>
-                        <a href="./tag.html" class="tag">vk-education</a>
+                        <a href="tag.html" class="tag">vk-education</a>
                         <a href="#" class="tag">postgresql</a>
                         <a href="#" class="tag">django</a>
                         <a href="#" class="tag">duckduckgo</a>
@@ -117,8 +127,8 @@
 
     <footer class="container-fluid container-lg py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="./index.html" class="nav-link px-2 text-body-secondary">Feed</a></li>
-            <li class="nav-item"><a href="./ask.html" class="nav-link px-2 text-body-secondary">Ask</a></li>
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-body-secondary">Feed</a></li>
+            <li class="nav-item"><a href="ask.html" class="nav-link px-2 text-body-secondary">Ask</a></li>
         </ul>
         <p class="text-center text-body-secondary">© 2024 Daniil Mironenko</p>
     </footer>
