@@ -10,5 +10,5 @@
             {% include "layouts/question.html" with item=question %}
         {% endfor %}
     </div>
-    {% include "layouts/pagination.html" %}
+    {% include "layouts/pagination.html" with page_obj=questions %}
 {% endblock %}

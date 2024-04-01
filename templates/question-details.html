@@ -9,12 +9,12 @@
         <h5>{{ question.answers|length }} answer(s)</h5>
 
         <div>
-            {% for answer in question.answers %}
+            {% for answer in answers %}
                 {% include "layouts/answer.html" with text=answer %}
             {% endfor %}
         </div>
 
-        {% include "layouts/pagination.html" %}
+        {% include "layouts/pagination.html" with page_obj=answers %}
 
         <form class="mt-5">
             <textarea class="form-control" id="answer" rows="5" placeholder="Your answer..."></textarea>

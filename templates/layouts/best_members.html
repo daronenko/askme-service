@@ -2,11 +2,9 @@
     <h5>Best Members</h5>
     <div>
         <ol>
-            <li><a class="link" href="#">daronenko</a></li>
-            <li><a class="link" href="#">daronenko</a></li>
-            <li><a class="link" href="#">daronenko</a></li>
-            <li><a class="link" href="#">daronenko</a></li>
-            <li><a class="link" href="#">daronenko</a></li>
+            {% for member in best_members %}
+                <li><a class="link" href="#">{{ member }}</a></li>
+            {% endfor %}
         </ol>
     </div>
 </div>

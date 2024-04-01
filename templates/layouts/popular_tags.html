@@ -1,11 +1,8 @@
 <div>
     <h5>Popular Tags</h5>
     <div>
-        <a href="#" class="tag">python</a>
-        <a href="tag.html" class="tag">vk-education</a>
-        <a href="#" class="tag">postgresql</a>
-        <a href="#" class="tag">django</a>
-        <a href="#" class="tag">duckduckgo</a>
-        <a href="#" class="tag">mail-ru</a>
+        {% for tag in popular_tags %}
+            <a href="{% url "tag" tag %}" class="tag">{{ tag }}</a>
+        {% endfor %}
     </div>
 </div>
