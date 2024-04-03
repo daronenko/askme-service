@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}" />
 </head>
 <body>
-    {% include "layouts/header.html" %}
+    {% include "components/header.html" %}
 
     <main class="container-fluid container-lg pt-5 pb-5">
         <div class="d-grid gap-5" style="grid-template-columns: 3fr 1fr">
@@ -22,13 +22,13 @@
                 {% block content%}{% endblock %}
             </div>
             <div>
-                {% include "layouts/popular_tags.html" %}
-                {% include "layouts/best_members.html" %}
+                {% include "components/popular_tags.html" %}
+                {% include "components/best_members.html" %}
             </div>
         </div>
     </main>
 
-    {% include "layouts/footer.html" %}
+    {% include "components/footer.html" %}
 
     <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
 </body>
