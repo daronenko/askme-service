@@ -17,9 +17,11 @@ QUESTIONS = [
 
 
 def index(request):
-    page_num = request.GET.get('page', 1)
+    page_num = request.GET.get('page', '1')
     paginator = Paginator(QUESTIONS, 5)
-    if not (1 <= int(page_num) <= paginator.num_pages):
+
+    if (not all(ch.isdigit() for ch in page_num)
+            or not (1 <= int(page_num) <= paginator.num_pages)):
         return redirect('index')
 
     page_obj = paginator.page(page_num)
@@ -34,9 +36,11 @@ def index(request):
 def hot_questions(request):
     questions = QUESTIONS[:10]
 
-    page_num = int(request.GET.get('page', 1))
+    page_num = request.GET.get('page', '1')
     paginator = Paginator(questions, 5)
-    if not (1 <= int(page_num) <= paginator.num_pages):
+
+    if (not all(ch.isdigit() for ch in page_num)
+            or not (1 <= int(page_num) <= paginator.num_pages)):
         return redirect('hot_questions')
 
     page_obj = paginator.page(page_num)
@@ -52,10 +56,12 @@ def hot_questions(request):
 def question(request, question_id):
     question = QUESTIONS[question_id]
 
-    page_num = request.GET.get('page', 1)
+    page_num = request.GET.get('page', '1')
     paginator = Paginator(question['answers'], 5)
-    if not (1 <= int(page_num) <= paginator.num_pages):
-        return redirect('question')
+
+    if (not all(ch.isdigit() for ch in page_num)
+            or not (1 <= int(page_num) <= paginator.num_pages)):
+        return redirect('question', question_id)
 
     page_obj = paginator.page(page_num)
 
@@ -98,10 +104,12 @@ def signup(request):
 def questions_by_tag(request, tag_name):
     questions = [question for question in QUESTIONS if tag_name in question['tags']]
 
-    page_num = int(request.GET.get('page', 1))
+    page_num = request.GET.get('page', '1')
     paginator = Paginator(questions, 5)
-    if not (1 <= int(page_num) <= paginator.num_pages):
-        return redirect('index')
+
+    if (not all(ch.isdigit() for ch in page_num)
+            or not (1 <= int(page_num) <= paginator.num_pages)):
+        return redirect('tag', tag_name)
 
     page_obj = paginator.page(page_num)
 
