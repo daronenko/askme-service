@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 
 POPULAR_TAGS = [f'Tag-{i}' for i in range(10)]
@@ -16,15 +16,21 @@ QUESTIONS = [
 ]
 
 
+def paginate(items, request, *, per_page=5):
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(items, per_page)
+
+    try:
+        page_obj = paginator.page(page_number)
+    except (EmptyPage, InvalidPage):
+        page_obj = paginator.page(1)
+
+    return page_obj
+
+
 def index(request):
-    page_num = request.GET.get('page', '1')
-    paginator = Paginator(QUESTIONS, 5)
+    page_obj = paginate(QUESTIONS, request)
 
-    if (not all(ch.isdigit() for ch in page_num)
-            or not (1 <= int(page_num) <= paginator.num_pages)):
-        return redirect('index')
-
-    page_obj = paginator.page(page_num)
     return render(request, 'index.html', {
         'questions': page_obj,
         'authorized': True,
@@ -35,15 +41,7 @@ def index(request):
 
 def hot_questions(request):
     questions = QUESTIONS[:10]
-
-    page_num = request.GET.get('page', '1')
-    paginator = Paginator(questions, 5)
-
-    if (not all(ch.isdigit() for ch in page_num)
-            or not (1 <= int(page_num) <= paginator.num_pages)):
-        return redirect('hot_questions')
-
-    page_obj = paginator.page(page_num)
+    page_obj = paginate(questions, request)
 
     return render(request, 'hot-questions.html', {
         'questions': page_obj,
@@ -55,15 +53,7 @@ def hot_questions(request):
 
 def question(request, question_id):
     question = QUESTIONS[question_id]
-
-    page_num = request.GET.get('page', '1')
-    paginator = Paginator(question['answers'], 5)
-
-    if (not all(ch.isdigit() for ch in page_num)
-            or not (1 <= int(page_num) <= paginator.num_pages)):
-        return redirect('question', question_id)
-
-    page_obj = paginator.page(page_num)
+    page_obj = paginate(question['answers'], request)
 
     return render(request, 'question-details.html', {
         'question': question,
@@ -103,15 +93,7 @@ def signup(request):
 
 def questions_by_tag(request, tag_name):
     questions = [question for question in QUESTIONS if tag_name in question['tags']]
-
-    page_num = request.GET.get('page', '1')
-    paginator = Paginator(questions, 5)
-
-    if (not all(ch.isdigit() for ch in page_num)
-            or not (1 <= int(page_num) <= paginator.num_pages)):
-        return redirect('tag', tag_name)
-
-    page_obj = paginator.page(page_num)
+    page_obj = paginate(questions, request)
 
     return render(request, 'tag.html', {
         'questions': page_obj,
