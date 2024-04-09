@@ -6,11 +6,11 @@
     {% include "components/question.html" with item=question %}
 
     <div class="mt-5" style="width: 90%">
-        <h5>{{ question.answers|length }} answer(s)</h5>
+        <h5>{{ question.answers_count }} answer(s)</h5>
 
         <div>
             {% for answer in answers %}
-                {% include "components/answer.html" with text=answer %}
+                {% include "components/answer.html" with item=answer %}
             {% endfor %}
         </div>
 

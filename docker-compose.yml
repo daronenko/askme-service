@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  postgres-service:
+    container_name: postgres-service-container
+    image: postgres:16.2
+    ports:
+      - "5432"
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/pgdata
+    environment:
+      - POSTGRES_HOST=postgres-service
+      - POSTGRES_DB=askme-service-db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    networks:
+      - postgres-service
+
+  askme-service:
+    container_name: askme-service-container
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRES_HOST=postgres-service
+      - POSTGRES_DB=askme-service-db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    depends_on:
+      - postgres-service
+    command: >
+      sh -c "python app/manage.py runserver 0.0.0.0:8000"
+    networks:
+      - postgres-service
+
+networks:
+    postgres-service:
+        driver: bridge

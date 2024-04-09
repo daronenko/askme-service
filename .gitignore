@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 .DS_Store
+.pgdata/
+Makefile.local
 
 ### Django ###
 *.log

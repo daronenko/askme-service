@@ -3,14 +3,14 @@
     <div class="row g-0">
         <div class="col-auto p-4">
             <div class="mb-3" style="width: 64px; height: 64px; margin: auto;">
-                <img src="{% static "avatars/avatar.png" %}" class="img-fluid rounded-circle" alt="avatar" />
+                <img src="{{ item.user.profile.avatar.url }}" class="img-fluid rounded-circle" alt="avatar" />
             </div>
             <div class="d-flex">
                 <button type="button" class="bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0">
                     <img src="{% static "icons/arrow-up-short.svg" %}" width="25" height="25" alt="arrow up" />
                 </button>
                 <div class="ms-2 me-2">
-                    <span class="fs-5">5</span>
+                    <span class="fs-5">{{ item.score }}</span>
                 </div>
                 <button type="button" class="bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0">
                     <img src="{% static "icons/arrow-down-short.svg" %}" width="25" height="25" alt="arrow down" />
@@ -22,9 +22,9 @@
                 <h5 class="card-title"><a href="{% url "question" item.id %}" class="link">{{ item.title }}</a></h5>
                 <p class="card-text">{{ item.text }}</p>
                 <div class="row justify-content-center">
-                    <a class="col-2 link" href="{% url "question" item.id %}">{{ item.answers|length }} answer(s)</a>
-                    <div class="col-10">
-                        {% for tag in item.tags %}
+                    <a class="col-3 link" href="{% url "question" item.id %}">{{ item.answers_count }} answer(s)</a>
+                    <div class="col-9">
+                        {% for tag in item.tags.all %}
                             <a href="{% url "tag" tag %}" class="tag">{{ tag }}</a>
                         {% endfor %}
                     </div>

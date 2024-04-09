@@ -17,11 +17,11 @@
             </form>
 
 
-            {% if authorized %}
+            {% if user %}
                 <div class="flex-shrink-0 dropdown">
                     <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{% static "avatars/avatar.png" %}" alt="avatar" width="32" height="32" class="rounded-circle">
-                        <span class="ms-2">daronenko</span>
+                        <img src="{{ user.profile.avatar.url }}" alt="avatar" width="32" height="32" class="rounded-circle">
+                        <span class="ms-2">{{ user.username }}</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow mt-2">
                         <li><a class="dropdown-item" href="#">Profile</a></li>

@@ -3,7 +3,7 @@
     <div>
         <ol>
             {% for member in best_members %}
-                <li><a class="link" href="#">{{ member }}</a></li>
+                <li><a class="link" href="#">{{ member }} ({{ member.rating }})</a></li>
             {% endfor %}
         </ol>
     </div>
