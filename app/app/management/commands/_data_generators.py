@@ -1,6 +1,7 @@
 from app.models import Question, User, Profile, Tag, Answer, QuestionVote, AnswerVote
 
 from django.db.models import Max
+from django.conf import settings
 
 from itertools import islice
 import random
@@ -34,7 +35,7 @@ def user_generator(fake, ratio):
 
 
 def profile_generator(fake, ratio):
-    avatars = os.listdir('app/uploads/avatars/')
+    avatars = os.listdir(settings.BASE_DIR / 'uploads/avatars/')
 
     for user_id in range(1, ratio + 1):
         yield Profile(
