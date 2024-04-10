@@ -5,6 +5,7 @@
 * [Requirements](#requirements)
 * [Getting Started](#getting-started)
   * [MacOS & Linux](#macos-linux)
+* [Commands](#commands)
 
 ## Requirements <a name="requirements"></a>
 
@@ -47,3 +48,12 @@ make docker-run
 > If you see in the logs that the database does not accept requests, it means that the database container started later than the application container. In this case, you need to run the command again or manually launch the database container first (`docker start postgres-service-container`).
 
 5. Open the `0.0.0.0:8000` path in the browser
+
+## Commands <a name="commands"></a>
+
+* `make docker-build` - build containers
+* `make docker-migrations` - create migrations
+* `make docker-migrate` - apply migrations
+* `make docker-clean-db` - remove data and schema from database
+* `make docker-fill-db <ratio>` - fill database with generated data
+* `make clean-docker` - stop and remove containers
