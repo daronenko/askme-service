@@ -20,7 +20,7 @@ community-supported service that allows users to ask questions and get answers t
 * [make](https://www.gnu.org/software/make/manual/make.html)
 
 > [!IMPORTANT]  
-> The project supports docker compose v2 by default, but if you want to use v1, then you need to change the `DOCKER_COMPOSE ?= docker compose` line in the `Makefile` to `DOCKER_COMPOSE ?= docker-compose`.
+> The project supports docker compose v2 by default, but if you want to use v1, then you need to add the `DOCKER_COMPOSE = docker-compose` line in the `Makefile.local`.
 
 ## Getting Started <a name="getting-started"></a>
 
