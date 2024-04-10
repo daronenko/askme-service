@@ -1,4 +1,10 @@
+<div align="center">
+
 # Ask Service
+
+community-supported service that allows users to ask questions and get answers to them
+
+</div>
 
 ## Contents
 
