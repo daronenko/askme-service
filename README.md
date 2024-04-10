@@ -37,7 +37,7 @@ make docker-fill-db ratio=100
 make docker-run
 ```
 
-> [!NOTE]  
+> [!IMPORTANT]  
 > If you see in the logs that the database does not accept requests, it means that the database container started later than the application container. In this case, you need to run the command again or manually launch the database container first (`docker start postgres-service-container`).
 
 5. Open the `0.0.0.0:8000` path in the browser
