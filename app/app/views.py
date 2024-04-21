@@ -4,14 +4,9 @@ from app.forms import LoginForm
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.urls import reverse
-
-
-try:
-    CURRENT_USER = User.objects.get(pk=1)
-except:
-    CURRENT_USER = None
 
 
 def paginate(items, request, *, per_page=5):
@@ -31,7 +26,6 @@ def index(request):
     page_obj = paginate(new_questions, request)
 
     context = {
-        'user': CURRENT_USER,
         'questions': page_obj,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
@@ -45,9 +39,7 @@ def hot_questions(request):
     page_obj = paginate(questions, request)
 
     context = {
-        'user': CURRENT_USER,
         'questions': page_obj,
-        'authorized': True,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -61,10 +53,8 @@ def question(request, question_id):
     page_obj = paginate(answers, request)
 
     context = {
-        'user': CURRENT_USER,
         'question': question,
         'answers': page_obj,
-        'authorized': True,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -72,11 +62,9 @@ def question(request, question_id):
     return render(request, 'question-details.html', context)
 
 
+@login_required
 def ask(request):
     context = {
-        'user': CURRENT_USER,
-        'authorized': True,
-        'error': None,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -92,13 +80,11 @@ def login(request):
         if login_form.is_valid():
             user = auth.authenticate(request, **login_form.cleaned_data)
             if user:
+                auth.login(request, user)
                 return redirect(reverse('index'))
 
     context = {
         'form': login_form,
-        'user': CURRENT_USER,
-        'authorized': True,
-        'error': None,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -106,11 +92,14 @@ def login(request):
     return render(request, 'login.html', context)
 
 
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect(request.META.get('HTTP_REFERER', 'index'))
+
+
 def signup(request):
     context = {
-        'user': CURRENT_USER,
-        'authorized': True,
-        'error': None,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -123,9 +112,7 @@ def questions_by_tag(request, tag_name):
     page_obj = paginate(questions, request)
 
     context = {
-        'user': CURRENT_USER,
         'questions': page_obj,
-        'authorized': True,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
         'tag_name': tag_name,
@@ -134,11 +121,9 @@ def questions_by_tag(request, tag_name):
     return render(request, 'tag.html', context)
 
 
+@login_required
 def settings(request):
     context = {
-        'user': CURRENT_USER,
-        'authorized': True,
-        'error': None,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
