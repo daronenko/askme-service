@@ -60,6 +60,7 @@ make docker-run
 * `make docker-build` - build containers
 * `make docker-migrations` - create migrations
 * `make docker-migrate` - apply migrations
+* `make superuser` - create superuser
 * `make docker-clean-db` - remove data and schema from database
 * `make docker-fill-db <ratio>` - fill database with generated data
 * `make clean-docker` - stop and remove containers

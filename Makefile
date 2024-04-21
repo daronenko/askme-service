@@ -20,6 +20,10 @@ migrate:
 migrations:
 	$(PYTHON) app/manage.py makemigrations
 
+.PHONY: superuser
+superuser:
+	$(PYTHON) app/manage.py createsuperuser
+
 .PHONY: fill-db
 fill-db:
 	$(PYTHON) app/manage.py fill_db $(ratio)
@@ -28,8 +32,8 @@ fill-db:
 clean-db:
 	$(PYTHON) app/manage.py clean_db
 
-.PHONY: docker-migrate docker-migrations docker-fill-db docker-clean-db
-docker-migrate docker-migrations docker-fill-db docker-clean-db: docker-%:
+.PHONY: docker-migrate docker-migrations docker-superuser docker-fill-db docker-clean-db
+docker-migrate docker-migrations docker-superuser docker-fill-db docker-clean-db: docker-%:
 	$(DOCKER_COMPOSE) run -e ratio=$(ratio) --rm askme-service make $*
 
 .PHONY: clean-docker
