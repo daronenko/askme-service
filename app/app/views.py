@@ -1,7 +1,12 @@
 from app.models import Question, Answer, Tag, Profile, User
+from app.forms import LoginForm
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from django.views.decorators.http import require_http_methods
+from django.contrib import auth
+from django.urls import reverse
+
 
 try:
     CURRENT_USER = User.objects.get(pk=1)
@@ -79,8 +84,18 @@ def ask(request):
     return render(request, 'ask.html', context)
 
 
+@require_http_methods(['GET', 'POST'])
 def login(request):
+    login_form = LoginForm()
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            user = auth.authenticate(request, **login_form.cleaned_data)
+            if user:
+                return redirect(reverse('index'))
+
     context = {
+        'form': login_form,
         'user': CURRENT_USER,
         'authorized': True,
         'error': None,
