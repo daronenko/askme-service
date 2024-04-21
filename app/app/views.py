@@ -1,5 +1,5 @@
 from app.models import Question, Answer, Tag, Profile, User
-from app.forms import LoginForm
+from app.forms import LoginForm, SignupForm, SettingsForm
 
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.urls import reverse
+from django.forms import model_to_dict
 
 
 def paginate(items, request, *, per_page=5):
@@ -62,7 +63,7 @@ def question(request, question_id):
     return render(request, 'question-details.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def ask(request):
     context = {
         'popular_tags': Tag.objects.get_popular_tags(),
@@ -81,7 +82,8 @@ def login(request):
             user = auth.authenticate(request, **login_form.cleaned_data)
             if user:
                 auth.login(request, user)
-                return redirect(reverse('index'))
+                redirect_to = request.GET.get('next', reverse('index'))
+                return redirect(redirect_to)
 
     context = {
         'form': login_form,
@@ -92,14 +94,24 @@ def login(request):
     return render(request, 'login.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     return redirect(request.META.get('HTTP_REFERER', 'index'))
 
 
 def signup(request):
+    signup_form = SignupForm()
+    if request.method == 'POST':
+        signup_form = SignupForm(request.POST)
+        if signup_form.is_valid():
+            user = signup_form.save()
+            if user:
+                auth.login(request, user)
+                return redirect(reverse('index'))
+
     context = {
+        'form': signup_form,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
@@ -121,9 +133,18 @@ def questions_by_tag(request, tag_name):
     return render(request, 'tag.html', context)
 
 
-@login_required
+@login_required(login_url='login')
+@require_http_methods(['GET', 'POST'])
 def settings(request):
+    settings_form = SettingsForm(initial=model_to_dict(request.user))
+    if request.method == 'POST':
+        settings_form = SettingsForm(request.POST, files=request.FILES, instance=request.user)
+        if settings_form.is_valid():
+            settings_form.save()
+            return redirect(reverse('settings'))
+
     context = {
+        'form': settings_form,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
