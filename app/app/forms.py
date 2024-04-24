@@ -1,6 +1,8 @@
 from django import forms
 from app import models
 
+from core.settings import NEW_QUESTION_AWARD, NEW_ANSWER_AWARD
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(min_length=3, max_length=30)
@@ -37,7 +39,7 @@ class SignupForm(forms.ModelForm):
         return user
 
 
-class SettingsForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     username = forms.CharField(min_length=3, max_length=30, required=False)
     email = forms.EmailField(min_length=6, max_length=30, required=False)
     avatar = forms.ImageField(required=False)
@@ -85,8 +87,11 @@ class AskForm(forms.ModelForm):
                                    content=self.cleaned_data.get('content'))
         question.user = self.user
 
+        question.user.profile.rating += NEW_QUESTION_AWARD
+
         if commit:
             question.save()
+            self.user.profile.save()
             AskForm.add_tags_to_question(question, self.cleaned_data.get('tags'))
 
         return question
@@ -112,8 +117,11 @@ class AnswerForm(forms.ModelForm):
         answer.question = question
         answer.is_correct = False
 
+        answer.user.profile.rating += NEW_ANSWER_AWARD
+
         if commit:
             answer.save()
             question.save()
+            self.user.profile.save()
 
         return answer

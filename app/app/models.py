@@ -54,6 +54,9 @@ class Question(models.Model):
 
 
 class AnswerManager(models.Manager):
+    def get_answer(self, answer_id):
+        return self.get(pk=answer_id)
+
     def get_answers(self, question_id):
         return self.filter(question_id=question_id).order_by('-is_correct', '-score')
 

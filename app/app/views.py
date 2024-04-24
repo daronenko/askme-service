@@ -1,13 +1,17 @@
 from app.models import Question, Answer, Tag, Profile, User
-from app.forms import LoginForm, SignupForm, SettingsForm, AskForm, AnswerForm
+from app.forms import LoginForm, SignupForm, ProfileForm, AskForm, AnswerForm
+
+from core.settings import QUESTIONS_PER_PAGE, ANSWERS_PER_PAGE
 
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.urls import reverse
 from django.forms import model_to_dict
+
+import math
 
 
 def paginate(items, request, *, per_page=5):
@@ -24,7 +28,7 @@ def paginate(items, request, *, per_page=5):
 
 def index(request):
     new_questions = list(Question.objects.new_questions())
-    page_obj = paginate(new_questions, request)
+    page_obj = paginate(new_questions, request, per_page=QUESTIONS_PER_PAGE)
 
     context = {
         'questions': page_obj,
@@ -37,7 +41,7 @@ def index(request):
 
 def hot_questions(request):
     questions = list(Question.objects.hot_questions())
-    page_obj = paginate(questions, request)
+    page_obj = paginate(questions, request, per_page=QUESTIONS_PER_PAGE)
 
     context = {
         'questions': page_obj,
@@ -51,14 +55,9 @@ def hot_questions(request):
 def question(request, question_id):
     question = Question.objects.get_question(question_id)
     answers = list(Answer.objects.get_answers(question_id))
-    page_obj = paginate(answers, request)
+    page_obj = paginate(answers, request, per_page=ANSWERS_PER_PAGE)
 
     answer_form = AnswerForm(request.user, question)
-    if request.method == 'POST':
-        answer_form = AnswerForm(request.user, question, request.POST)
-        if answer_form.is_valid():
-            answer_form.save()
-            return redirect(reverse('question', kwargs={'question_id': question_id}))
 
     context = {
         'form': answer_form,
@@ -71,7 +70,22 @@ def question(request, question_id):
     return render(request, 'question-details.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='login', redirect_field_name='continue')
+@require_POST
+def answer(request, question_id):
+    question = Question.objects.get_question(question_id)
+    answer_form = AnswerForm(request.user, question, request.POST)
+    if answer_form.is_valid():
+        answer = answer_form.save()
+        answers_count = Answer.objects.get_answers(question_id).count()
+        return redirect(
+            reverse('question', kwargs={'question_id': question_id})
+            + f'?page={math.ceil(answers_count / ANSWERS_PER_PAGE)}'
+            + f'#{answer.id}'
+        )
+
+
+@login_required(login_url='login', redirect_field_name='continue')
 @require_http_methods(['GET', 'POST'])
 def ask(request):
     ask_form = AskForm(request.user)
@@ -100,7 +114,7 @@ def login(request):
             user = auth.authenticate(request, **login_form.cleaned_data)
             if user:
                 auth.login(request, user)
-                redirect_to = request.GET.get('next', reverse('index'))
+                redirect_to = request.GET.get('continue', reverse('index'))
                 return redirect(redirect_to)
 
     context = {
@@ -112,10 +126,10 @@ def login(request):
     return render(request, 'login.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='login', redirect_field_name='continue')
 def logout(request):
     auth.logout(request)
-    return redirect(request.META.get('HTTP_REFERER', 'index'))
+    return redirect(request.META.get('HTTP_REFERER', reverse('index')))
 
 
 def signup(request):
@@ -139,7 +153,7 @@ def signup(request):
 
 def questions_by_tag(request, tag_name):
     questions = list(Question.objects.questions_by_tag(tag_name))
-    page_obj = paginate(questions, request)
+    page_obj = paginate(questions, request, per_page=QUESTIONS_PER_PAGE)
 
     context = {
         'questions': page_obj,
@@ -151,20 +165,20 @@ def questions_by_tag(request, tag_name):
     return render(request, 'tag.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='login', redirect_field_name='continue')
 @require_http_methods(['GET', 'POST'])
-def settings(request):
-    settings_form = SettingsForm(initial=model_to_dict(request.user))
+def profile(request):
+    profile_form = ProfileForm(initial=model_to_dict(request.user))
     if request.method == 'POST':
-        settings_form = SettingsForm(request.POST, files=request.FILES, instance=request.user)
-        if settings_form.is_valid():
-            settings_form.save()
-            return redirect(reverse('settings'))
+        profile_form = ProfileForm(request.POST, files=request.FILES, instance=request.user)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect(reverse('profile'))
 
     context = {
-        'form': settings_form,
+        'form': profile_form,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
 
-    return render(request, 'settings.html', context)
+    return render(request, 'profile.html', context)

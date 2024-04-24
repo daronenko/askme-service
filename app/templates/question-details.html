@@ -18,10 +18,12 @@
 
         {% include "components/pagination.html" with page_obj=answers %}
 
-        <form method="post" class="mt-5">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <button class="btn btn-primary mt-3">Answer</button>
-        </form>
+        {% if request.user.is_authenticated %}
+            <form method="post" action="{% url "answer" question.id %}" class="mt-5">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-primary mt-3">Answer</button>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}
