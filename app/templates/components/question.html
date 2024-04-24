@@ -20,7 +20,7 @@
         <div class="col">
             <div class="card-body ps-0">
                 <h5 class="card-title"><a href="{% url "question" item.id %}" class="link">{{ item.title }}</a></h5>
-                <p class="card-text">{{ item.text }}</p>
+                <p class="card-text">{{ item.content }}</p>
                 <div class="row justify-content-center">
                     <a class="col-3 link" href="{% url "question" item.id %}">{{ item.answers_count }} answer(s)</a>
                     <div class="col-9">

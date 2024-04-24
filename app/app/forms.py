@@ -58,3 +58,62 @@ class SettingsForm(forms.ModelForm):
             user.profile.save()
 
         return user
+
+
+class AskForm(forms.ModelForm):
+    tags = forms.CharField(required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = models.Question
+        fields = ['title', 'content']
+
+    def clean_tags(self):
+        return self.cleaned_data.get('tags').split()
+
+    @staticmethod
+    def add_tags_to_question(question, tags):
+        for tag in tags:
+            tag, created = models.Tag.objects.get_or_create(name=tag)
+            question.tags.add(tag)
+
+    def save(self, commit=True):
+        question = models.Question(title=self.cleaned_data.get('title'),
+                                   content=self.cleaned_data.get('content'))
+        question.user = self.user
+
+        if commit:
+            question.save()
+            AskForm.add_tags_to_question(question, self.cleaned_data.get('tags'))
+
+        return question
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = models.Answer
+        fields = ['content']
+
+    def __init__(self, user, question, *args, **kwargs):
+        self.user = user
+        self.question = question
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        answer = models.Answer(content=self.cleaned_data.get('content'))
+        answer.user = self.user
+
+        question = self.question
+        question.answers_count += 1
+
+        answer.question = question
+        answer.is_correct = False
+
+        if commit:
+            answer.save()
+            question.save()
+
+        return answer

@@ -1,5 +1,7 @@
 {% extends "layouts/base.html" %}
 
+{% load bootstrap5 %}
+
 {% block content %}
     <h1>Question</h1>
 
@@ -16,8 +18,9 @@
 
         {% include "components/pagination.html" with page_obj=answers %}
 
-        <form class="mt-5">
-            <textarea class="form-control" id="answer" rows="5" placeholder="Your answer..."></textarea>
+        <form method="post" class="mt-5">
+            {% csrf_token %}
+            {% bootstrap_form form %}
             <button class="btn btn-primary mt-3">Answer</button>
         </form>
     </div>

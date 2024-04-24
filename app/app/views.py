@@ -1,5 +1,5 @@
 from app.models import Question, Answer, Tag, Profile, User
-from app.forms import LoginForm, SignupForm, SettingsForm
+from app.forms import LoginForm, SignupForm, SettingsForm, AskForm, AnswerForm
 
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -53,7 +53,15 @@ def question(request, question_id):
     answers = list(Answer.objects.get_answers(question_id))
     page_obj = paginate(answers, request)
 
+    answer_form = AnswerForm(request.user, question)
+    if request.method == 'POST':
+        answer_form = AnswerForm(request.user, question, request.POST)
+        if answer_form.is_valid():
+            answer_form.save()
+            return redirect(reverse('question', kwargs={'question_id': question_id}))
+
     context = {
+        'form': answer_form,
         'question': question,
         'answers': page_obj,
         'popular_tags': Tag.objects.get_popular_tags(),
@@ -64,8 +72,18 @@ def question(request, question_id):
 
 
 @login_required(login_url='login')
+@require_http_methods(['GET', 'POST'])
 def ask(request):
+    ask_form = AskForm(request.user)
+    if request.method == 'POST':
+        ask_form = AskForm(request.user, request.POST)
+        if ask_form.is_valid():
+            question = ask_form.save()
+            if question:
+                return redirect('question', question_id=question.id)
+
     context = {
+        'form': ask_form,
         'popular_tags': Tag.objects.get_popular_tags(),
         'best_members': Profile.objects.get_best_profiles(),
     }
