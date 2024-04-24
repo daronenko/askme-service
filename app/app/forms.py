@@ -1,7 +1,9 @@
-from django import forms
 from app import models
-
 from core.settings import NEW_QUESTION_AWARD, NEW_ANSWER_AWARD
+
+from django import forms
+
+import re
 
 
 class LoginForm(forms.Form):
@@ -19,11 +21,16 @@ class SignupForm(forms.ModelForm):
         model = models.User
         fields = ['username', 'email', 'password']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and models.User.objects.filter(email=email).exists():
+            raise forms.ValidationError('A user with that email already exists.')
+
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
         password_confirm = self.cleaned_data.get('password_confirm')
         if password != password_confirm:
-            raise forms.ValidationError('Passwords do not match')
+            raise forms.ValidationError('Passwords do not match.')
 
         return password_confirm
 
@@ -74,7 +81,11 @@ class AskForm(forms.ModelForm):
         fields = ['title', 'content']
 
     def clean_tags(self):
-        return self.cleaned_data.get('tags').split()
+        tags = self.cleaned_data.get('tags')
+        if not re.match(r'^[a-zA-Z\-_ ]+$', tags):
+            raise forms.ValidationError('A tag name can only consist of letters and dashes.')
+
+        return tags.split()
 
     @staticmethod
     def add_tags_to_question(question, tags):

@@ -3,7 +3,7 @@ from django.db import connection
 
 
 class Command(BaseCommand):
-    help = 'Clear db data'
+    help = 'Clear database schema'
 
     def handle(self, *args, **options):
         with connection.cursor() as cursor:

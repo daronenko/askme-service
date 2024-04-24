@@ -28,14 +28,18 @@ superuser:
 fill-db:
 	$(PYTHON) app/manage.py fill_db $(ratio)
 
-.PHONY: clean-db
-clean-db:
-	$(PYTHON) app/manage.py clean_db
+.PHONY: clear-db
+clear-db:
+	$(PYTHON) app/manage.py clear_db
 
-.PHONY: docker-migrate docker-migrations docker-superuser docker-fill-db docker-clean-db
-docker-migrate docker-migrations docker-superuser docker-fill-db docker-clean-db: docker-%:
+.PHONY: clear-db-schema
+clear-db-schema:
+	$(PYTHON) app/manage.py clear_db_schema
+
+.PHONY: docker-migrate docker-migrations docker-superuser docker-fill-db docker-clear-db docker-clear-db-schema
+docker-migrate docker-migrations docker-superuser docker-fill-db docker-clear-db docker-clear-db-schema: docker-%:
 	$(DOCKER_COMPOSE) run -e ratio=$(ratio) --rm askme-service make $*
 
-.PHONY: clean-docker
-clean-docker:
+.PHONY: clear-docker
+clear-docker:
 	$(DOCKER_COMPOSE) down -v
