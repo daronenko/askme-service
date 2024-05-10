@@ -6,6 +6,7 @@ from core.settings import QUESTIONS_PER_PAGE, ANSWERS_PER_PAGE
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.urls import reverse
@@ -72,6 +73,7 @@ def question(request, question_id):
 
 @login_required(login_url='login', redirect_field_name='continue')
 @require_POST
+@csrf_protect
 def answer(request, question_id):
     question = Question.objects.get_question(question_id)
     answer_form = AnswerForm(request.user, question, request.POST)
@@ -87,6 +89,7 @@ def answer(request, question_id):
 
 @login_required(login_url='login', redirect_field_name='continue')
 @require_http_methods(['GET', 'POST'])
+@csrf_protect
 def ask(request):
     ask_form = AskForm(request.user)
     if request.method == 'POST':
@@ -106,6 +109,7 @@ def ask(request):
 
 
 @require_http_methods(['GET', 'POST'])
+@csrf_protect
 def login(request):
     login_form = LoginForm()
     if request.method == 'POST':
@@ -132,6 +136,7 @@ def logout(request):
     return redirect(request.META.get('HTTP_REFERER', reverse('index')))
 
 
+@csrf_protect
 def signup(request):
     signup_form = SignupForm()
     if request.method == 'POST':
@@ -167,6 +172,7 @@ def questions_by_tag(request, tag_name):
 
 @login_required(login_url='login', redirect_field_name='continue')
 @require_http_methods(['GET', 'POST'])
+@csrf_protect
 def profile(request):
     profile_form = ProfileForm(initial=model_to_dict(request.user))
     if request.method == 'POST':
