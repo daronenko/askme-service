@@ -136,3 +136,19 @@ class AnswerForm(forms.ModelForm):
             self.user.profile.save()
 
         return answer
+
+
+class CorrectForm(forms.Form):
+    answer_id = forms.IntegerField()
+    is_correct = forms.BooleanField(required=False)
+
+    def save(self, commit=True):
+        answer_id = self.cleaned_data['answer_id']
+        answer = models.Answer.objects.get(id=answer_id)
+
+        answer.is_correct = self.cleaned_data['is_correct']
+
+        if commit:
+            answer.save()
+
+        return answer

@@ -1,5 +1,5 @@
 from app.models import Question, Answer, Tag, Profile, User
-from app.forms import LoginForm, SignupForm, ProfileForm, AskForm, AnswerForm
+from app.forms import LoginForm, SignupForm, ProfileForm, AskForm, AnswerForm, CorrectForm
 
 from core.settings import QUESTIONS_PER_PAGE, ANSWERS_PER_PAGE
 
@@ -11,8 +11,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.urls import reverse
 from django.forms import model_to_dict
+from django.http import JsonResponse
 
 import math
+import json
 
 
 def paginate(items, request, *, per_page=5):
@@ -188,3 +190,19 @@ def profile(request):
     }
 
     return render(request, 'profile.html', context)
+
+
+@login_required(login_url='login', redirect_field_name='continue')
+@require_POST
+@csrf_protect
+def correct(request):
+    body = json.loads(request.body)
+
+    correct_form = CorrectForm(initial=body)
+    if correct_form.is_valid():
+        answer = correct_form.save()
+        body['is_correct'] = answer.is_correct
+        return JsonResponse(body)
+
+    body['is_correct'] = False
+    return JsonResponse(body)
