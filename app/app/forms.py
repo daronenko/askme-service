@@ -26,6 +26,8 @@ class SignupForm(forms.ModelForm):
         if email and models.User.objects.filter(email=email).exists():
             raise forms.ValidationError('A user with that email already exists.')
 
+        return email
+
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
         password_confirm = self.cleaned_data.get('password_confirm')
@@ -35,7 +37,10 @@ class SignupForm(forms.ModelForm):
         return password_confirm
 
     def save(self, commit=True):
-        user = super().save(commit=False)
+        user = models.User(
+            username=self.cleaned_data['username'],
+            email=self.cleaned_data['email'],
+        )
         user.set_password(self.cleaned_data['password'])
         profile = models.Profile(user=user)
 
@@ -54,6 +59,13 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = ['username', 'email', 'avatar']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and models.User.objects.filter(email=email).exists():
+            raise forms.ValidationError('A user with that email already exists.')
+
+        return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -140,7 +152,7 @@ class AnswerForm(forms.ModelForm):
 
 class CorrectForm(forms.Form):
     answer_id = forms.IntegerField()
-    is_correct = forms.BooleanField(required=False)
+    is_correct = forms.BooleanField()
 
     def save(self, commit=True):
         answer_id = self.cleaned_data['answer_id']

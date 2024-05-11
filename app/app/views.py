@@ -198,7 +198,7 @@ def profile(request):
 def correct(request):
     body = json.loads(request.body)
 
-    correct_form = CorrectForm(initial=body)
+    correct_form = CorrectForm(body)
     if correct_form.is_valid():
         answer = correct_form.save()
         body['is_correct'] = answer.is_correct
