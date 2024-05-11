@@ -1,18 +1,18 @@
 {% load static %}
-<div class="card mt-3 mb-3">
+<question class="card mt-3 mb-3">
     <div class="row g-0">
         <div class="col-auto p-4">
             <div class="mb-3" style="width: 64px; height: 64px; margin: auto;">
                 <img src="{{ item.user.profile.avatar.url }}" class="img-fluid rounded-circle" alt="avatar" />
             </div>
             <div class="d-flex">
-                <button type="button" class="bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0">
+                <button name="upvote" type="button" class="bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0" data-action="upvote">
                     <img src="{% static "icons/arrow-up-short.svg" %}" width="25" height="25" alt="arrow up" />
                 </button>
                 <div class="ms-2 me-2">
-                    <span class="fs-5">{{ item.score }}</span>
+                    <span class="score fs-5" data-component="question" data-component-id="{{ item.id }}">{{ item.score }}</span>
                 </div>
-                <button type="button" class="bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0">
+                <button name="downvote" type="button" class="bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0" data-action="downvote">
                     <img src="{% static "icons/arrow-down-short.svg" %}" width="25" height="25" alt="arrow down" />
                 </button>
             </div>
@@ -22,7 +22,7 @@
                 <h5 class="card-title"><a href="{% url "question" item.id %}" class="link">{{ item.title }}</a></h5>
                 <p class="card-text">{{ item.content }}</p>
                 <div class="row justify-content-center">
-                    <a class="col-3 link" href="{% url "question" item.id %}">{{ item.answers_count }} answer(s)</a>
+                    <a class="col-3 link text-truncate" href="{% url "question" item.id %}">{{ item.answers_count }} answer(s)</a>
                     <div class="col-9">
                         {% for tag in item.tags.all %}
                             <a href="{% url "tag" tag %}" class="tag">{{ tag }}</a>
@@ -32,4 +32,4 @@
             </div>
         </div>
     </div>
-</div>
+</question>

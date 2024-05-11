@@ -152,3 +152,88 @@ class CorrectForm(forms.Form):
             answer.save()
 
         return answer
+
+
+class VoteForm(forms.Form):
+    ACTIONS = (
+        ('upvote', 'upvote'),
+        ('downvote', 'downvote'),
+    )
+
+    COMPONENTS = (
+        ('question', 'question'),
+        ('answer', 'answer'),
+    )
+
+    action = forms.ChoiceField(choices=ACTIONS)
+    component = forms.ChoiceField(choices=COMPONENTS)
+    component_id = forms.IntegerField()
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        action = self.cleaned_data['action']
+        component = self.cleaned_data['component']
+        component_id = self.cleaned_data['component_id']
+
+        if component == 'question':
+            question = models.Question.objects.get(id=component_id)
+            vote = models.QuestionVote.objects.filter(user=self.user, question_id=component_id).first()
+            if vote:
+                if vote.vote_type == action[0]:
+                    vote.delete()
+                else:
+                    vote.vote_type = action[0]
+
+                    if commit:
+                        vote.save()
+            else:
+                vote = models.QuestionVote(
+                    user=self.user,
+                    question_id=component_id,
+                    vote_type=action[0]
+                )
+
+                if commit:
+                    vote.save()
+
+            upvotes = models.QuestionVote.objects.filter(question_id=component_id, vote_type='u').count()
+            downvotes = models.QuestionVote.objects.filter(question_id=component_id, vote_type='d').count()
+            rating = upvotes - downvotes
+
+            question.score = rating
+            if commit:
+                question.save()
+
+        else:
+            answer = models.Answer.objects.get(id=component_id)
+            vote = models.AnswerVote.objects.filter(user=self.user, answer_id=component_id).first()
+            if vote:
+                if vote.vote_type == action[0]:
+                    vote.delete()
+                else:
+                    vote.vote_type = action[0]
+
+                    if commit:
+                        vote.save()
+            else:
+                vote = models.AnswerVote(
+                    user=self.user,
+                    answer_id=component_id,
+                    vote_type=action[0]
+                )
+
+                if commit:
+                    vote.save()
+
+            upvotes = models.AnswerVote.objects.filter(answer_id=component_id, vote_type='u').count()
+            downvotes = models.AnswerVote.objects.filter(answer_id=component_id, vote_type='d').count()
+            rating = upvotes - downvotes
+
+            answer.score = rating
+            if commit:
+                answer.save()
+
+        return rating

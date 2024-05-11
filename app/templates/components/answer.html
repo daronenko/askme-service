@@ -6,11 +6,13 @@
                 <img src="{{ item.user.profile.avatar.url }}" class="img-fluid rounded-circle" alt="avatar" />
             </div>
             <div class="d-flex">
-                <button type="button" class="bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0">
+                <button type="button" class="upvote bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0" data-action="upvote">
                     <img src="{% static "icons/arrow-up-short.svg" %}" width="25" height="25" />
                 </button>
-                <div class="ms-2 me-2" style="display: flex; align-items: center; font-size: 18px; font-weight: 500;">{{ item.score }}</div>
-                <button type="button" class="bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0">
+                <div class="ms-2 me-2" style="display: flex; align-items: center; font-size: 18px; font-weight: 500;">
+                    <span class="score" data-component="answer" data-component-id="{{ item.id }}">{{ item.score }}</span>
+                </div>
+                <button type="button" class="downvote bi bi-arrow-down-short btn btn-sm btn-light fs-5 p-0" data-action="downvote">
                     <img src="{% static "icons/arrow-down-short.svg" %}" width="25" height="25" />
                 </button>
             </div>

@@ -1,5 +1,5 @@
-from app.models import Question, Answer, Tag, Profile, User
-from app.forms import LoginForm, SignupForm, ProfileForm, AskForm, AnswerForm, CorrectForm
+from app.models import Question, Answer, Tag, Profile, User, QuestionVote, AnswerVote
+from app.forms import LoginForm, SignupForm, ProfileForm, AskForm, AnswerForm, CorrectForm, VoteForm
 
 from core.settings import QUESTIONS_PER_PAGE, ANSWERS_PER_PAGE
 
@@ -205,4 +205,20 @@ def correct(request):
         return JsonResponse(body)
 
     body['is_correct'] = False
+    return JsonResponse(body)
+
+
+@login_required(login_url='login', redirect_field_name='continue')
+@require_POST
+@csrf_protect
+def vote(request):
+    body = json.loads(request.body)
+
+    vote_form = VoteForm(request.user, body)
+    if vote_form.is_valid():
+        rating = vote_form.save()
+        body['rating'] = rating
+        return JsonResponse(body)
+
+    body['rating'] = 0
     return JsonResponse(body)
