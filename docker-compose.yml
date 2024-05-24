@@ -32,7 +32,7 @@ services:
     depends_on:
       - postgres-service
     command: >
-      sh -c "python app/manage.py runserver 0.0.0.0:8000"
+      sh -c "cd app/ && gunicorn -c core/gunicorn.conf.py core.wsgi"
     networks:
       - postgres-service
 

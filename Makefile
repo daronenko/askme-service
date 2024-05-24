@@ -1,5 +1,6 @@
 DOCKER_COMPOSE ?= docker compose
 PYTHON ?= python
+GUNICORN ?= gunicorn
 
 # use Makefile.local for customization
 -include Makefile.local
@@ -11,6 +12,10 @@ docker-build:
 .PHONY: docker-run
 docker-run:
 	$(DOCKER_COMPOSE) up
+
+.PHONY: run
+run:
+	cd app/ && $(GUNICORN) -c core/gunicorn.conf.py core.wsgi
 
 .PHONY: migrate
 migrate:
