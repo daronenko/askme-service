@@ -29,17 +29,21 @@ def paginate(items, request, *, per_page=5):
     return page_obj
 
 
+# def index(request):
+#     new_questions = list(Question.objects.new_questions())
+#     page_obj = paginate(new_questions, request, per_page=QUESTIONS_PER_PAGE)
+#
+#     context = {
+#         'questions': page_obj,
+#         'popular_tags': Tag.objects.get_popular_tags(),
+#         'best_members': Profile.objects.get_best_profiles(),
+#     }
+#
+#     return render(request, 'index.html', context)
+
+
 def index(request):
-    new_questions = list(Question.objects.new_questions())
-    page_obj = paginate(new_questions, request, per_page=QUESTIONS_PER_PAGE)
-
-    context = {
-        'questions': page_obj,
-        'popular_tags': Tag.objects.get_popular_tags(),
-        'best_members': Profile.objects.get_best_profiles(),
-    }
-
-    return render(request, 'index.html', context)
+    return render(request, 'sample.html')
 
 
 def hot_questions(request):
