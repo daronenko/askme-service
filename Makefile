@@ -38,6 +38,11 @@ superuser:
 fill-db:
 	$(PYTHON) app/manage.py fill_db $(ratio)
 
+.PHONY: warmup-cache
+warmup-cache:
+	$(PYTHON) app/manage.py generate_top_users
+	$(PYTHON) app/manage.py generate_top_tags
+
 .PHONY: clear-db
 clear-db:
 	$(PYTHON) app/manage.py clear_db

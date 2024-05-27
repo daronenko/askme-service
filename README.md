@@ -59,13 +59,19 @@ make migrate
 make fill-db ratio=100
 ```
 
-5. Run centrifugo server (available on `127.0.0.1:8001`):
+5. Warm up cache:
+
+```shell
+make warmup-cache
+```
+
+6. Run centrifugo server (available on `127.0.0.1:8001`):
 
 ```shell
 make cent
 ```
 
-6. Run project:
+7. Run project:
 
 ```shell
 make run
@@ -125,6 +131,7 @@ make clear-docker
 * `make migrations` - create migrations
 * `make migrate` - apply migrations
 * `make fill-db ratio=<ratio>` - fill database with generated data
+* `make warmup-cache` - warm up the cache
 * `make cent` - start centrifugo server
 * `make run` - start gunicorn server
 * `make superuser` - create superuser
