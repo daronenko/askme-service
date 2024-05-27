@@ -5,21 +5,24 @@
             <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="fs-4 fw-bold">Ask Service</span>
             </a>
-            <ul class="dropdown-menu text-small shadow mt-2" style="">
+            <ul class="dropdown-menu text-small shadow mt-2">
                 <li><a class="dropdown-item" href="{% url "index" %}" aria-current="page">All Questions</a></li>
                 <li><a class="dropdown-item" href="{% url "ask" %}">Ask</a></li>
             </ul>
         </div>
 
         <div class="d-flex align-items-center">
-            <form class="w-100 me-3" role="search">
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            <form action="/search/" method="GET" class="w-100 me-3" role="search">
+                <div id="search-dropdown" class="dropdown">
+                    <input name="q" type="search" id="search-input" class="form-control" placeholder="Search..." aria-label="Search" autocomplete="off" data-bs-toggle="dropdown" aria-expanded="false"> 
+                    <ul id="hints-container" class="dropdown-menu dropdown-menu-start w-100" style="display: none"></ul>
+                </div>
             </form>
 
             {% if request.user.is_authenticated %}
                 <div class="flex-shrink-0 dropdown">
                     <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ request.user.profile.avatar.url }}" alt="avatar" width="32" height="32" class="rounded-circle">
+                        <img src="{{ request.user.profile.avatar.url }}" id="header-avatar" alt="avatar" width="32" height="32" class="rounded-circle">
                         <span class="ms-2">{{ request.user.username }}</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow mt-2">

@@ -3,7 +3,7 @@
     <div class="row g-0">
         <div class="col-auto p-4">
             <div class="mb-3" style="width: 64px; height: 64px; margin: auto;">
-                <img src="{{ item.user.profile.avatar.url }}" class="img-fluid rounded-circle" alt="avatar" />
+                <img src="{{ item.user.profile.avatar.url }}" class="img-fluid rounded-circle answer-avatar" alt="avatar" />
             </div>
             <div class="d-flex">
                 <button type="button" class="upvote bi bi-arrow-up-short btn btn-sm btn-light fs-5 p-0" data-action="upvote">
@@ -21,19 +21,15 @@
             <div class="card-body ps-0" id="{{ item.id }}">
                 <p class="card-text">{{ item.content }}</p>
                 <div class="form-check">
-                    {% if request.user == item.user %}
-                        {% if item.is_correct %}
-                            <input class="form-check-input answer-checkbox" type="checkbox" data-answer-id="{{ item.id }}" value="" id="answer-{{ item.id }}" checked>
-                        {% else %}
-                            <input class="form-check-input answer-checkbox" type="checkbox" data-answer-id="{{ item.id }}" value="" id="answer-{{ item.id }}">
+                    <input
+                        class="form-check-input answer-checkbox" type="checkbox" data-answer-id="{{ item.id }}" value="" id="answer-{{ item.id }}"
+                        {% if request.user != item.question.user %}
+                            disabled
                         {% endif %}
-                    {% else %}
                         {% if item.is_correct %}
-                            <input class="form-check-input answer-checkbox" type="checkbox" data-answer-id="{{ item.id }}" value="" id="answer-{{ item.id }}" checked disabled>
-                        {% else %}
-                            <input class="form-check-input answer-checkbox" type="checkbox" data-answer-id="{{ item.id }}" value="" id="answer-{{ item.id }}" disabled>
-                        {% endif %}
-                    {% endif %}
+                            checked
+                        {% endif %} 
+                    >
                     <label class="form-check-label text-body-secondary" for="answer-{{ item.id }}">correct</label>
                 </div>
             </div>

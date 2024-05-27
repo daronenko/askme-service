@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ask Service</title>
 
-    <!-- {% csrf_token %} -->
+    {% csrf_token %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,5 +35,8 @@
     <script src="{% static 'js/csrf.js' %}"></script>
     <script src="{% static 'js/voting.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="{% static 'js/search_hints.js' %}"></script>
+    <script src="https://unpkg.com/centrifuge@5.0.1/dist/centrifuge.js"></script>
 </body>
 </html>

@@ -60,15 +60,23 @@ class ProfileForm(forms.ModelForm):
         model = models.User
         fields = ['username', 'email', 'avatar']
 
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if email and models.User.objects.filter(email=email).exists():
+        if email and models.User.objects.filter(email=email).exclude(id=self.user.id).exists():
             raise forms.ValidationError('A user with that email already exists.')
 
         return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
+
+        email = self.cleaned_data.get('email')
+        if email:
+            user.email = email
 
         avatar = self.cleaned_data.get('avatar')
         if avatar:
@@ -101,9 +109,16 @@ class AskForm(forms.ModelForm):
 
     @staticmethod
     def add_tags_to_question(question, tags):
-        for tag in tags:
-            tag, created = models.Tag.objects.get_or_create(name=tag)
+        for tag_name in tags:
+            tag, created = models.Tag.objects.get_or_create(name=tag_name)
             question.tags.add(tag)
+
+    @staticmethod
+    def update_usages(tags):
+        for tag_name in tags:
+            tag = models.Tag.objects.get(name=tag_name)
+            tag.usages_count += 1
+            tag.save()
 
     def save(self, commit=True):
         question = models.Question(title=self.cleaned_data.get('title'),
@@ -116,6 +131,7 @@ class AskForm(forms.ModelForm):
             question.save()
             self.user.profile.save()
             AskForm.add_tags_to_question(question, self.cleaned_data.get('tags'))
+            AskForm.update_usages(self.cleaned_data.get('tags'))
 
         return question
 
@@ -152,7 +168,16 @@ class AnswerForm(forms.ModelForm):
 
 class CorrectForm(forms.Form):
     answer_id = forms.IntegerField()
-    is_correct = forms.BooleanField()
+    is_correct = forms.BooleanField(required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        answer_id = self.cleaned_data['answer_id']
+        if models.Answer.objects.get(id=answer_id).question.user != self.user:
+            raise forms.ValidationError('You can not perform this request.')
 
     def save(self, commit=True):
         answer_id = self.cleaned_data['answer_id']

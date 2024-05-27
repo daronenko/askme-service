@@ -1,0 +1,13 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <div class="d-flex gap-4 mb-0">
+        <h1>Search Results</h1>
+    </div>
+    <div>
+        {% for question in questions %}
+            {% include "components/question.html" with item=question %}
+        {% endfor %}
+    </div>
+    {% include "components/pagination.html" with page_obj=questions %}
+{% endblock %}

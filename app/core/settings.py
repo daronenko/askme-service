@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,14 @@ else:
             'PASSWORD': os.environ.get('password'),
         }
     }
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/django_cache",
+    }
+}
 
 
 # Password validation
@@ -169,6 +178,13 @@ NEW_ANSWER_AWARD = 1
 
 QUESTIONS_PER_PAGE = 10
 ANSWERS_PER_PAGE = 10
+
+CENTRIFUGO_SECRET = "my_secret"
+CENTRIFUGO_WS_URL = "ws://127.0.0.1:8001/connection/websocket"
+CENTRIFUGO_API_URL = "http://127.0.0.1:8001/api"
+CENTRIFUGO_API_KEY = "my_api_key"
+
+HINTS_COUNT = 5
 
 try:
     from local_settings import *

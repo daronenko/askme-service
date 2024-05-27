@@ -4,6 +4,8 @@
 .DS_Store
 .pgdata/
 Makefile.local
+django_cache/
+nginx_cache/
 
 ### Django ###
 *.log

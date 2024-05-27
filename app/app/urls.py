@@ -16,4 +16,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('tag/<tag_name>/', views.questions_by_tag, name='tag'),
     path('profile/edit', views.profile, name='profile'),
+    path('search/', views.search, name='search'),
+    path('search/hints/', views.search_hints, name='search_hints'),
 ]

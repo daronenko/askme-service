@@ -29,3 +29,47 @@ body {
 .link:hover {
     color: #0085de;
 }
+
+/* .search-row { */
+/*     display: flex; */
+/*     align-items: center; */
+/*     padding: 0px 7px; */
+/*     border: 1px solid #999; */
+/*     border-radius: 5px; */
+/* } */
+/**/
+/* #search-input { */
+/*     flex: 1; */
+/*     height: 40px; */
+/*     background: transparent; */
+/*     border: 0; */
+/*     outline: 0; */
+/*     font-size: 18px; */
+/*     color: #333; */
+/* } */
+/**/
+/* #search-btn { */
+/*     background: transparent; */
+/*     border: 0; */
+/*     outline: 0; */
+/* } */
+/**/
+/* .hints-container { */
+/*     z-index: 1000; */
+/* } */
+/**/
+/* .hints-box ul { */
+/*     border-top: 1px solid #999; */
+/*     padding: 15px 10px; */
+/* } */
+/**/
+/* .hints-box ul li { */
+/*     list-style: none; */
+/*     border-radius: 3px; */
+/*     padding: 15px 10px; */
+/*     cursor: pointer; */
+/* } */
+/**/
+/* .hints-box ul li:hover { */
+/*     background: #e9f3ff; */
+/* } */

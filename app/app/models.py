@@ -2,11 +2,13 @@ from core.settings import POPULAR_TAGS_COUNT, BEST_USERS_COUNT, HOT_QUESTIONS_CO
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 
 
 class TagManager(models.Manager):
     def get_popular_tags(self):
-        return self.order_by("-usages_count")[:POPULAR_TAGS_COUNT]
+        return self.order_by('-usages_count')[:POPULAR_TAGS_COUNT]
 
 
 class Tag(models.Model):
@@ -47,10 +49,17 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    search_vector = SearchVectorField(null=True)
+
     objects = QuestionManager()
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['search_vector']),
+        ]
 
 
 class AnswerManager(models.Manager):

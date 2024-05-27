@@ -1,6 +1,7 @@
 DOCKER_COMPOSE ?= docker compose
 PYTHON ?= python
 GUNICORN ?= gunicorn
+CENTRIFUGO ?= centrifugo
 
 # use Makefile.local for customization
 -include Makefile.local
@@ -12,6 +13,10 @@ docker-build:
 .PHONY: docker-run
 docker-run:
 	$(DOCKER_COMPOSE) up
+
+.PHONY: cent
+cent:
+	$(CENTRIFUGO) --config=centrifugo/config.json
 
 .PHONY: run
 run:

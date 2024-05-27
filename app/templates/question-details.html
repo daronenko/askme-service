@@ -11,13 +11,17 @@
     <div class="mt-5" style="width: 90%">
         <h5>{{ question.answers_count }} answer(s)</h5>
 
-        <div>
+        <div id="answer-container">
+            <div id="example-answer" style="display: none; visibility: hidden">
+                {% include "components/answer.html" with item=example_answer %}
+            </div>
+
             {% for answer in answers %}
                 {% include "components/answer.html" with item=answer %}
             {% endfor %}
         </div>
 
-        {% include "components/pagination.html" with page_obj=answers %}
+        <!-- {% include "components/pagination.html" with page_obj=answers %} -->
 
         {% if request.user.is_authenticated %}
             <form method="post" action="{% url "answer" question.id %}" class="mt-5">
@@ -29,4 +33,34 @@
     </div>
 
     <script src="{% static 'js/marking_answers.js' %}"></script>
+
+    <script src="https://unpkg.com/centrifuge@5.0.1/dist/centrifuge.js"></script>
+    <script type="text/javascript">
+        const centrifuge = new Centrifuge("{{ centrifugo.url }}", {
+            token: "{{ centrifugo.token }}"
+        });
+
+        centrifuge.on('connecting', function (ctx) {
+            console.log(`connecting: ${ctx.code}, ${ctx.reason}`);
+        }).on('connected', function (ctx) {
+            console.log(`connected over ${ctx.transport}`);
+        }).on('disconnected', function (ctx) {
+            console.log(`disconnected: ${ctx.code}, ${ctx.reason}`);
+        }).connect();
+
+        const sub = centrifuge.newSubscription("{{ ws_channel_name }}");
+
+        sub.on('publication', function (ctx) {
+            const answerContainer = document.getElementById("answer-container");
+            const answerElement = document.querySelector('#example-answer answer');
+            const clonedElement = answerElement.cloneNode(true);
+
+            const image_src = document.querySelector('#header-avatar').getAttribute('src');
+            clonedElement.querySelector('.card-text').innerHTML = ctx.data.content;
+            clonedElement.querySelector('.answer-avatar').src = ctx.data.avatar_url;
+
+            console.log(ctx.data.content);
+            answerContainer.appendChild(clonedElement);
+        }).subscribe();
+    </script>
 {% endblock %}
