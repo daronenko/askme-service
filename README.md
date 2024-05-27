@@ -122,17 +122,6 @@ make clear-docker
 
 ### Local <a name="local-commands"></a>
 
-* `make docker-migrations` - create migrations
-* `make docker-migrate` - apply migrations
-* `make docker-fill-db ratio=<ratio>` - fill database with generated data
-* `make docker-run` - start gunicorn server
-* `make docker-superuser` - create superuser
-* `make docker-clear-db` - remove data from database
-* `make docker-clear-db-schema` - remove database schema and data in it
-* `make clear-docker` - stop and remove containers
-
-### Docker <a name="docker-commands"></a>
-
 * `make migrations` - create migrations
 * `make migrate` - apply migrations
 * `make fill-db ratio=<ratio>` - fill database with generated data
@@ -141,6 +130,17 @@ make clear-docker
 * `make superuser` - create superuser
 * `make clear-db` - remove data from database
 * `make clear-db-schema` - remove database schema and data in it
+
+### Docker <a name="docker-commands"></a>
+
+* `make docker-migrations` - create migrations
+* `make docker-migrate` - apply migrations
+* `make docker-fill-db ratio=<ratio>` - fill database with generated data
+* `make docker-run` - start gunicorn server
+* `make docker-superuser` - create superuser
+* `make docker-clear-db` - remove data from database
+* `make docker-clear-db-schema` - remove database schema and data in it
+* `make clear-docker` - stop and remove containers
 
 ## Benchmarks <a name="benchmarks"></a>
 
