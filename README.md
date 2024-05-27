@@ -4,10 +4,7 @@
 
 community-supported service that allows users to ask questions and get answers to them
 
-</div>
-
-> [!IMPORTANT]  
-> Currently, only local launch is possible. 
+</div> 
 
 ## Contents
 
@@ -32,6 +29,9 @@ community-supported service that allows users to ask questions and get answers t
 > The project supports docker compose v2 by default, but if you want to use v1, then you need to add the `DOCKER_COMPOSE = docker-compose` line in the `Makefile.local`.
 
 ## Getting Started <a name="getting-started"></a>
+
+> [!IMPORTANT]  
+> Currently, only local launch is possible.
 
 ### MacOS & Linux <a name="macos-linux"></a>
 
