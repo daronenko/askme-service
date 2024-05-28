@@ -77,7 +77,7 @@ make cent
 make run
 ```
 
-7. Open the `127.0.0.1:8000` path in the browser
+8. Open the `127.0.0.1:8000` path in the browser
 
 #### Docker <a name="docker-steps"></a>
 
