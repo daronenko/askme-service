@@ -17,7 +17,6 @@ from django.conf import settings
 from django.contrib.postgres.search import SearchQuery
 from django.db.models import Q
 
-import cent
 import requests
 
 import math
@@ -115,7 +114,6 @@ def hot_questions(request):
 def question(request, question_id):
     question = Question.objects.get_question(question_id)
     answers = Answer.objects.get_answers(question_id)
-    # page_obj = paginate(answers, request, per_page=ANSWERS_PER_PAGE)
 
     answer_form = AnswerForm(request.user, question)
 
@@ -153,13 +151,6 @@ def answer(request, question_id):
 
         body = model_to_dict(answer)
         body |= {'avatar_url': request.user.profile.avatar.url}
-
-        # client = cent.Client(api_url, api_key)
-        # request = cent.PublishRequest(
-        #     channel=ws_channel_name,
-        #     data=body,
-        # )
-        # client.publish(request)
 
         headers = {
             'Content-Type': 'application/json',
