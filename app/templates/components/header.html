@@ -12,7 +12,7 @@
         </div>
 
         <div class="d-flex align-items-center">
-            <form action="/search/" method="GET" class="w-100 me-3" role="search">
+            <form action="{% url 'search' %}" method="GET" class="w-100 me-3" role="search">
                 <div id="search-dropdown" class="dropdown">
                     <input name="q" type="search" id="search-input" class="form-control" placeholder="Search..." aria-label="Search" autocomplete="off" data-bs-toggle="dropdown" aria-expanded="false"> 
                     <ul id="hints-container" class="dropdown-menu dropdown-menu-start w-100" style="display: none"></ul>
