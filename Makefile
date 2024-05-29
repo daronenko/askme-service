@@ -53,7 +53,7 @@ clear-db-schema:
 
 .PHONY: docker-migrate docker-migrations docker-superuser docker-fill-db docker-clear-db docker-clear-db-schema
 docker-migrate docker-migrations docker-superuser docker-fill-db docker-clear-db docker-clear-db-schema: docker-%:
-	$(DOCKER_COMPOSE) run -e ratio=$(ratio) --rm askme-service make $*
+	$(DOCKER_COMPOSE) run -e ratio=$(ratio) --service-ports --rm askme-service make $*
 
 .PHONY: clear-docker
 clear-docker:

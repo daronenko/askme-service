@@ -5,7 +5,8 @@
   "admin_secret": "secret",
   "admin": true,
   "allowed_origins": [
-    "http://127.0.0.1:8000"
+    "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000"
   ],
   "allow_subscribe_for_client": true,
   "port": "8001"

@@ -91,6 +91,7 @@ if IN_DOCKER:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'HOST': os.environ.get('POSTGRES_HOST'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
             'NAME': os.environ.get('POSTGRES_DB'),
             'USER': os.environ.get('POSTGRES_USER'),
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -180,9 +181,14 @@ QUESTIONS_PER_PAGE = 10
 ANSWERS_PER_PAGE = 10
 
 CENTRIFUGO_SECRET = "my_secret"
-CENTRIFUGO_WS_URL = "ws://127.0.0.1:8001/connection/websocket"
-CENTRIFUGO_API_URL = "http://127.0.0.1:8001/api"
 CENTRIFUGO_API_KEY = "my_api_key"
+
+if IN_DOCKER:
+    CENTRIFUGO_WS_URL = "ws://0.0.0.0:8001/connection/websocket"
+    CENTRIFUGO_API_URL = "http://centrifugo-service:8001/api"
+else:
+    CENTRIFUGO_WS_URL = "ws://127.0.0.1:8001/connection/websocket"
+    CENTRIFUGO_API_URL = "http://127.0.0.1:8001/api"
 
 HINTS_COUNT = 5
 

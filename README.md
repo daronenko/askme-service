@@ -30,9 +30,6 @@ community-supported service that allows users to ask questions and get answers t
 
 ## Getting Started <a name="getting-started"></a>
 
-> [!IMPORTANT]  
-> Currently, only local launch is possible.
-
 ### MacOS & Linux <a name="macos-linux"></a>
 
 #### Local <a name="local-steps"></a>
@@ -84,9 +81,7 @@ make run
 1. Set the `IN_DOCKER` variable in `app/core/local_settings.py` to `True`
 
 ```python
-...
 IN_DOCKER = True
-...
 ```
 
 2. Build the container:
@@ -101,6 +96,9 @@ make docker-build
 make docker-migrate
 ```
 
+> [!IMPORTANT]  
+> If you see in the logs that the database does not accept requests, it means that the database container started later than the application container. In this case, you need to run the command again or manually launch the database container first (`docker start postgres-service-container`).
+
 4. Fill db with generated data:
 
 ```shell
@@ -113,10 +111,7 @@ make docker-fill-db ratio=100
 make docker-run
 ```
 
-> [!IMPORTANT]  
-> If you see in the logs that the database does not accept requests, it means that the database container started later than the application container. In this case, you need to run the command again or manually launch the database container first (`docker start postgres-service-container`).
-
-5. Open the `127.0.0.1:8000` path in the browser
+5. Open the `0.0.0.0:8000` path in the browser (centrifugo server available on `0.0.0.0:8001`)
 
 6. Stop and remove docker containers:
 

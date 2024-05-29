@@ -16,6 +16,21 @@ services:
     networks:
       - postgres-service
 
+  centrifugo-service:
+    container_name: centrifugo-service-container
+    image: centrifugo/centrifugo:v5
+    volumes:
+      - ./centrifugo/config.json:/centrifugo/config.json
+    command: centrifugo -c config.json
+    ports:
+      - "8001:8001"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    networks:
+      - centrifugo-service
+
   askme-service:
     container_name: askme-service-container
     build:
@@ -31,11 +46,17 @@ services:
       - POSTGRES_PASSWORD=password
     depends_on:
       - postgres-service
+      - centrifugo-service
     command: >
-      sh -c "cd app/ && gunicorn -c core/gunicorn.conf.py core.wsgi"
+      sh -c "python app/manage.py generate_top_users &&
+             python app/manage.py generate_top_tags &&
+             cd app/ && gunicorn -c core/gunicorn.conf.py core.wsgi"
     networks:
       - postgres-service
+      - centrifugo-service
 
 networks:
     postgres-service:
         driver: bridge
+    centrifugo-service:
+      driver: bridge
